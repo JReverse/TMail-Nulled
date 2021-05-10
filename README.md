@@ -1,6 +1,8 @@
 # TMail-Nulled
 ***Version 6.2***
 
+⚠️ *** UNMAINTAINED TILL FURTHER NOTICE ***⚠️
+
 v6.2 - 5 April 2021
 - Added HTML Block for Page Content
 - Fixed Mailbox Redirect Issue
@@ -232,3 +234,6 @@ v1.1 - 25 June 2017
 
 v1.0 - 22 June 2017
 - Initial Release! Yay!
+
+
+⚠️ *** UNMAINTAINED TILL FURTHER NOTICE ***⚠️
