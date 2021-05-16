@@ -1,7 +1,21 @@
 # TMail-Nulled
-***Version 6.2***
+***Version 6.4***
 
 ⚠️ *** UNMAINTAINED TILL FURTHER NOTICE ***⚠️
+
+v6.4 - 10 May 2021
+- Added Optional Feature to allow Email to create via URL
+- Fixed Theme Upload Issue
+- Fixed Bug with Attachments
+- Fixed Security Flaw if your Email Server allowed .php attachments
+
+v6.3 - 29 April 2021
+- Added ability to update Date Format
+- Added feature of delete email if domain no longer exists
+- Optimized TMail Core Packages
+- Optimized CRON Job
+- Fixed Ad Space 1 and 5 Refresh Issues
+- Updated Vendor Files
 
 v6.2 - 5 April 2021
 - Added HTML Block for Page Content
