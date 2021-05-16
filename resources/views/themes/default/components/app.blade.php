@@ -1,4 +1,4 @@
-<main x-data="{ id: 0 }" class="lg:flex">
+<main x-data="{ id: 0 }" class="flex-1 lg:flex">
     @if($error)
     <div id="imap-error" class="flex items-center w-full h-full fixed top-0 left-0 bg-red-900 opacity-75 z-50">
         <div class="flex flex-col mx-auto">
@@ -15,12 +15,12 @@
         </div>
     </div>
     @endif
-    <div class="w-full lg:w-1/3 bg-white lg:min-h-tm-default">
+    <div class="w-full lg:w-1/3 bg-white flex flex-col min-h-tm-mobile">
         @if($messages)
         <div class="messages flex flex-col-reverse divide-y divide-y-reverse divide-gray-200">
             @foreach($messages as $i => $message)
             @if($i % 2 == 0 && config('app.settings.ads.four'))
-            <div class="flex justify-center items-center max-w-full p-4">{!! config('app.settings.ads.four') !!}</div>
+            <div class="max-w-full ads-four">{!! config('app.settings.ads.four') !!}</div>
             @endif
             <div x-on:click="id = {{ $message['id'] }}; document.querySelector('.message-content').scrollIntoView({behavior: 'smooth'});" class="w-full p-5 cursor-pointer hover:bg-gray-50" data-id="{{ $message['id'] }}">
                 <div class="flex justify-between">
@@ -37,31 +37,21 @@
             @endforeach
         </div>
         @else
-        <div class="flex justify-center items-center h-40 lg:min-h-tm-default text-gray-400 text-2xl">
+        <div class="flex-1 flex justify-center items-center h-40 text-gray-400 text-2xl">
             {{ $initial ? __('Empty Inbox') : __('Fetching') . '...' }}
         </div>
         @endif
     </div>
-    <div class="message-content w-full lg:w-2/3 bg-white min-h-screen lg:min-h-tm-default border-1 border-l border-gray-200">
-        <div x-show="id === 0" class="hidden lg:flex lg:min-h-tm-default">
+    <div class="message-content w-full lg:w-2/3 bg-white border-1 border-l border-gray-200 flex flex-col">
+        <div x-show="id === 0" class="flex-1 hidden lg:flex">
             <div class="w-2/3 m-auto">
                 <img class="m-auto max-w-full" src="{{ asset('images/sample.jpg') }}" alt="mails">
                 <a class="block text-center text-xs text-gray-400 pt-4" href="https://www.freepik.com" target="_blank" rel="noopener noreferrer">{{ __('Above Graphic by') }} <strong>{{ __('Freepik') }}</strong></a>
             </div>
         </div>
         @foreach($messages as $message)
-        <div x-show="id === {{ $message['id'] }}" id="message-{{ $message['id'] }}" class="lg:flex flex-col lg:min-h-tm-default">
-            <textarea class="hidden">To: {{ $this->email }}
-From: "{{ $message['sender_name'] }}" <{{ $message['sender_email'] }}>
-Subject: {{ $message['subject'] }}
-Date: {{ $message['date'] }}
-Content-Type: text/html
-
-{{ $message['content'] }}
-            </textarea>
-            @if(config('app.settings.ads.two'))
-            <div class="flex justify-center items-center max-w-full px-4 pt-4">{!! config('app.settings.ads.two') !!}</div>
-            @endif
+        <div x-show="id === {{ $message['id'] }}" id="message-{{ $message['id'] }}" class="flex-1 lg:flex flex-col">
+            <textarea class="hidden">To: {{ $this->email }}&#13;From: "{{ $message['sender_name'] }}" <{{ $message['sender_email'] }}>&#13;Subject: {{ $message['subject'] }}&#13;Date: {{ $message['date'] }}&#13;Content-Type: text/html&#13;&#13;{{ $message['content'] }}</textarea>
             <div class="flex flex-col flex-none py-5 px-6">
                 <div class="flex justify-between items-center">
                     <div>
@@ -78,10 +68,7 @@ Content-Type: text/html
                     <button x-on:click="id = 0; document.querySelector(`[data-id='{{ $message['id'] }}']`).remove()" wire:click="delete({{ $message['id'] }})" class="text-xs font-semibold bg-red-700 py-1 px-3 rounded-md text-white">{{ __('Delete') }}</button>
                 </div>
             </div>
-            <iframe class="w-full flex flex-grow min-h-tm-iframe lg:min-h-0 px-5" srcdoc="{{ $message['content'] }}" frameborder="0"></iframe>
-            @if(config('app.settings.ads.three'))
-            <div class="flex justify-center items-center max-w-full p-4">{!! config('app.settings.ads.three') !!}</div>
-            @endif
+            <iframe class="w-full flex flex-grow px-5" srcdoc="{{ $message['content'] }}" frameborder="0"></iframe>
             @if(count($message['attachments']) > 0)
             <span class="pt-5 pb-3 px-6 text-xs">{{ __('Attachments') }}</span>
             <div class="flex pb-5 px-6">
@@ -93,4 +80,4 @@ Content-Type: text/html
         </div>
         @endforeach
     </div>
-</div>
+</main>

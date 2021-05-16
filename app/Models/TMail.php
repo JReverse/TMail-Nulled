@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\Meta;
+use Carbon\Carbon;
+//IMAP Includes
+use Ddeboer\Imap\Server;
+use Ddeboer\Imap\SearchExpression;
+use Ddeboer\Imap\Search\Email\To;
 
 class TMail extends Model {
 
@@ -12,9 +17,95 @@ class TMail extends Model {
         if ($imap === null) {
             $imap = config('app.settings.imap');
         }
-        $client = \Webklex\IMAP\Facades\Client::make($imap);
-        $client->connect();
-        return $client->getFolder('INBOX');
+        $flags = $imap['protocol'] . '/' . $imap['encryption'];
+        if ($imap['validate_cert']) {
+            $flags = $flags . '/validate-cert';
+        } else {
+            $flags = $flags . '/novalidate-cert';
+        }
+        $server = new Server($imap['host'], $imap['port'], $flags);
+        $connection = $server->authenticate($imap['username'], $imap['password']);
+        return $connection;
+    }
+
+    public static function getMessages($email) {
+        $allowed = explode(',', 'doc,docx,xls,xlsx,ppt,pptx,xps,pdf,dxf,ai,psd,eps,ps,svg,ttf,zip,rar,tar,gzip,mp3,mpeg,wav,ogg,jpeg,jpg,png,gif,bmp,tif,webm,mpeg4,3gpp,mov,avi,mpegs,wmv,flx,txt');
+        $connection = TMail::connectMailBox();
+        $mailbox = $connection->getMailbox('INBOX');
+        $search = new SearchExpression();
+        $search->addCondition(new To($email));
+        $messages = $mailbox->getMessages($search, \SORTDATE, false);
+        $response = [
+            'data' => [],
+            'notifications' => []
+        ];
+        foreach ($messages as $message) {
+            $sender = $message->getFrom();
+            $date = $message->getDate();
+            $datediff = new Carbon($date);
+            $content = '';
+            $html = $message->getBodyHtml();
+            if ($html) {
+                $content = str_replace('<a', '<a target="blank"', $html);
+            } else {
+                $text = $message->getBodyText();
+                $content = str_replace('<a', '<a target="blank"', str_replace(array("\r\n", "\n"), '<br/>', $text));
+            }
+            $obj = [];
+            $obj['subject'] = $message->getSubject();
+            $obj['sender_name'] = $sender->getName();
+            $obj['sender_email'] = $sender->getAddress();
+            $obj['date'] = $date->format(config('app.settings.date_format', 'd M Y h:i A'));
+            $obj['datediff'] = $datediff->diffForHumans();
+            $obj['id'] = $message->getNumber();
+            $obj['content'] = $content;
+            $obj['attachments'] = [];
+            if ($message->hasAttachments()) {
+                $attachments = $message->getAttachments();
+                $directory = './tmp/attachments/' . $obj['id'] . '/';
+                is_dir($directory) ?: mkdir($directory, 0777, true);
+                foreach ($attachments as $attachment) {
+                    $filenameArray = explode('.', $attachment->getFilename());
+                    $extension = $filenameArray[count($filenameArray) - 1];
+                    if (in_array($extension, $allowed)) {
+                        if (!file_exists($directory . $attachment->getFilename())) {
+                            file_put_contents(
+                                $directory . $attachment->getFilename(),
+                                $attachment->getDecodedContent()
+                            );
+                        }
+                        if ($attachment->getFilename() !== 'undefined') {
+                            $url = env('APP_URL') . str_replace('./', '/', $directory . $attachment->getFilename());
+                            $structure = $attachment->getStructure();
+                            if (isset($structure->id) && str_contains($obj['content'], trim($structure->id, '<>'))) {
+                                $obj['content'] = str_replace('cid:' . trim($structure->id, '<>'), $url, $obj['content']);
+                            }
+                            array_push($obj['attachments'], [
+                                'file' => $attachment->getFilename(),
+                                'url' => $url
+                            ]);
+                        }
+                    }
+                }
+            }
+            array_push($response['data'], $obj);
+            if (!$message->isSeen()) {
+                array_push($response['notifications'], [
+                    'subject' => $obj['subject'],
+                    'sender_name' => $obj['sender_name'],
+                    'sender_email' => $obj['sender_email']
+                ]);
+            }
+            $message->markAsSeen();
+        }
+        return $response;
+    }
+
+    public static function deleteMessage($id) {
+        $connection = TMail::connectMailBox();
+        $mailbox = $connection->getMailbox('INBOX');
+        $mailbox->getMessage($id)->delete();
+        $connection->expunge();
     }
 
     public static function getEmail($generate = false) {
@@ -34,7 +125,10 @@ class TMail extends Model {
     }
 
     public static function setEmail($email) {
-        Cookie::queue('email', $email, 43800);
+        $emails = unserialize(Cookie::get('emails'));
+        if (in_array($email, $emails)) {
+            Cookie::queue('email', $email, 43800);
+        }
     }
 
     public static function removeEmail($email) {
@@ -42,13 +136,13 @@ class TMail extends Model {
         $key = array_search($email, $emails);
         if ($key !== false) {
             array_splice($emails, $key, 1);
-            if (count($emails) > 0) {
-                TMail::setEmail($emails[0]);
-                Cookie::queue('emails', serialize($emails), 43800);
-            } else {
-                Cookie::queue('email', '', -1);
-                Cookie::queue('emails', serialize([]), -1);
-            }
+        }
+        if (count($emails) > 0) {
+            TMail::setEmail($emails[0]);
+            Cookie::queue('emails', serialize($emails), 43800);
+        } else {
+            Cookie::queue('email', '', -1);
+            Cookie::queue('emails', serialize([]), -1);
         }
     }
 

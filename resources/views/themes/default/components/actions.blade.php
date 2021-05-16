@@ -1,7 +1,4 @@
 <div x-data="{ in_app: {{ $in_app ? 'true' : 'false' }} }">
-    @if(config('app.settings.ads.five'))
-    <div class="flex justify-center items-center max-w-full m-4">{!! config('app.settings.ads.five') !!}</div>
-    @endif
     <div x-show.transition.in="in_app" class="app-action mt-4 px-8" style="display: none;">
         @if(count($emails) > 0 && $in_app)
         <div class="lg:max-w-72 lg:mx-auto">
@@ -89,7 +86,4 @@
             </div>
         </div>
     </div>
-    @if(config('app.settings.ads.one'))
-    <div class="flex justify-center items-center max-w-full m-4">{!! config('app.settings.ads.one') !!}</div>
-    @endif
 </div>

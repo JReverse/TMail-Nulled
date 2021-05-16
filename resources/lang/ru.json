@@ -18,5 +18,6 @@
   "Email ID Copied to Clipboard": "Код электронной почты скопирован в буфер обмена",
   "Please enter Username": "Пожалуйста, введите имя пользователя",
   "Please Select a Domain": "Пожалуйста, выберите домен",
-  "Username not allowed": "Имя пользователя не разрешено"
+  "Username not allowed": "Имя пользователя не разрешено",
+  "Your Temporary Email Address": "Ваш временный адрес электронной почты"
 }

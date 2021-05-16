@@ -27,7 +27,7 @@ Route::middleware(['verify.install'])->group(function () {
     Route::get('/', [AppController::class, 'load'])->name('home');
 
     //App Routes
-    Route::get('mailbox', [AppController::class, 'app'])->name('app');
+    Route::get('mailbox/{email?}', [AppController::class, 'app'])->name('app');
     Route::get('message/{messageId}', [AppController::class, 'message'])->name('message');
     Route::get('switch/{email}', [AppController::class, 'switch'])->name('switch');
 

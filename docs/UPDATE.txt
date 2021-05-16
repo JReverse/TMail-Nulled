@@ -1,5 +1,0 @@
-TMail 6 is a revamped version of TMail with completely new codebase because of which we cannot provide a automated upgrade from TMail 5 to TMail 6. You can re-install the script with the installer built-in with TMail 6. 
-
-However, we're also providing a FREE Migration from TMail 5 to TMail 6 to all our Customers, regardless on whether your Support Contract is Expired or not.
-
-To get free migration, please submit a form here - https://forms.gle/WHQFFxmxYdYz7fDw8

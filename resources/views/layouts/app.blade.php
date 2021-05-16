@@ -34,7 +34,7 @@
 
             <!-- Page Content -->
             <main>
-                <div class="mt-5 -mb-5 hidden annoucements" data-id="1">
+                <div class="mt-5 -mb-5 hidden annoucements" data-id="2">
                     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                         <div class="col-span-6">
                             <div class="w-full py-3 px-4 overflow-hidden sm:rounded-md flex items-center border bg-indigo-50 border-indigo-500">
@@ -46,8 +46,8 @@
                                 <div class="ml-4 flex-1">
                                     <div class="text-sm text-gray-600 font-semibold">{{ __('Announcements') }}</div>
                                     <div class="text-md">
-                                        {{ __('Do you want to get notified when we release new Themes for TMail6?') }}
-                                        <a class="font-semibold underline" href="https://bulkmailerapp.com/lists/by27894j1b073/subscribe" target="_blank" rel="noopener noreferrer">{{ __('Subscribe here') }}</a>
+                                        {{ __('Receive cool tips on weekly basis on how to get the best out of your TMail6.') }}
+                                        <a class="font-semibold underline" href="https://bulkmailerapp.com/lists/rp490cg6vw3c7/subscribe" target="_blank" rel="noopener noreferrer">{{ __('Subscribe here') }}</a>
                                     </div>
                                 </div>
                                 <div class="close text-indigo-500 w-5 cursor-pointer"> 

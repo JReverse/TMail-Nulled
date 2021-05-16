@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Models\TMail;
 use Carbon\Carbon;
+use Ddeboer\Imap\Search\Date\Before;
 
 class AppController extends Controller {
 
@@ -22,7 +23,17 @@ class AppController extends Controller {
         }
     }
 
-    public function app() {
+    public function app($email = null) {
+        if ($email) {
+            if (config('app.settings.enable_create_from_url')) {
+                TMail::createCustomEmailFull($email);
+            }
+            return redirect()->route('app');
+        }
+        if (config('app.settings.theme') == 'groot' && config('app.settings.groot_theme_options.extra_text_page')) {
+            $in_page = Page::find(config('app.settings.groot_theme_options.extra_text_page'));
+            return view('themes.' . config('app.settings.theme') . '.app')->with(compact('in_page'));
+        }
         return view('themes.' . config('app.settings.theme') . '.app');
     }
 
@@ -76,14 +87,23 @@ class AppController extends Controller {
             } else {
                 $before = Carbon::now()->subMonths(config('app.settings.delete.value'));
             }
-            $mailbox = TMail::connectMailBox();
-            $messages = $mailbox->query()->before($before)->limit(50)->get();
+            $limit = 50;
+            $today = new \DateTimeImmutable($before);
+            $connection = TMail::connectMailBox();
+            $mailbox = $connection->getMailbox('INBOX');
+            $messages = $mailbox->getMessages(new Before($today));
+            $count = 0;
             foreach ($messages as $message) {
-                $message->delete(true);
+                $message->delete();
+                $count++;
+                if ($count >= $limit) {
+                    break;
+                }
             }
+            $connection->expunge();
             $directory = './tmp/attachments/';
             $this->rrmdir($directory);
-            return "Deleted " . count($messages) . " Messages";
+            return "Deleted " . $count . " Messages";
         } else {
             return abort(401);
         }

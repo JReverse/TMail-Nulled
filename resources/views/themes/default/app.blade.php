@@ -38,15 +38,29 @@
                         @endif
                     </a>
                 </div>
+                @if(config('app.settings.ads.five'))
+                <div class="flex justify-center items-center max-w-full m-4 ads-five">{!! config('app.settings.ads.five') !!}</div>
+                @endif
                 @livewire('frontend.actions', ['in_app' => isset($page) ? true : false])
+                @if(config('app.settings.ads.one'))
+                <div class="flex justify-center items-center max-w-full m-4 ads-one">{!! config('app.settings.ads.one') !!}</div>
+                @endif
             </div>
             <div class="w-full lg:w-3/4">
                 @livewire('frontend.nav')
-                @if(isset($page))
-                    @livewire('frontend.page', ['page' => $page])
-                @else 
-                    @livewire('frontend.app')
-                @endif
+                <div class="flex flex-col lg:min-h-tm-default">
+                    @if(config('app.settings.ads.two'))
+                    <div class="flex justify-center items-center max-w-full ads-two">{!! config('app.settings.ads.two') !!}</div>
+                    @endif
+                    @if(isset($page))
+                        @livewire('frontend.page', ['page' => $page])
+                    @else 
+                        @livewire('frontend.app')
+                    @endif
+                    @if(config('app.settings.ads.three'))
+                    <div class="flex justify-center items-center max-w-full ads-three">{!! config('app.settings.ads.three') !!}</div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

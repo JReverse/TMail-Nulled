@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('You can apply Manual Update ZIP files here') }}
+        {{ __('To apply a manual update, upload the ZIP file via File Manager or FTP in /public/tmp directory and enter the file name here.') }}
     </x-slot>
 
     <x-slot name="form">
@@ -29,9 +29,10 @@
         </div>
         @else
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="file" value="{{ __('Upload Zip') }}" />
-            <input id="file" type="file" class="mt-2" wire:model="file"/>
-            <x-jet-input-error for="file" class="mt-2" />
+            <x-jet-label for="filename" value="{{ __('Enter the File Name') }}" />
+            <x-jet-input id="filename" type="text" class="mt-1 block w-full" placeholder="Enter the Filename with extension (eg. Patch-ABC.zip)" wire:model.defer="filename"/>
+            <x-jet-input-error for="filename" class="mt-2" />
+            <x-jet-label class="mt-2" for="filename" value="{{ __('Make sure the file exist in /public/tmp directory') }}" />
         </div>
         @endif
     </x-slot>

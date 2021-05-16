@@ -1,3 +1,3 @@
-<main class="page p-5">
+<main class="page flex-1 p-5">
     {!! $page->content !!}
 </main>

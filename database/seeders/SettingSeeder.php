@@ -14,7 +14,7 @@ class SettingSeeder extends Seeder {
     public function run() {
         $settings = new \stdClass;
         $settings->name = 'TMail';
-        $settings->version = '6.2';
+        $settings->version = '6.3';
         $settings->license_key = '';
         $settings->api_keys = [];
         $settings->domains = [];
@@ -45,6 +45,7 @@ class SettingSeeder extends Seeder {
             'protocol' => 'imap'
         ];
         $settings->language = 'en';
+        $settings->enable_create_from_url = false;
         $settings->forbidden_ids = [
             'admin',
             'catch'
@@ -69,6 +70,10 @@ class SettingSeeder extends Seeder {
             'text' => '<p>By using this website you agree to our <a href="#" target="_blank">Cookie Policy</a></p>'
         ];
         $settings->after_last_email_delete = 'redirect_to_homepage';
+        $settings->date_format = 'd M Y h:i A';
+        $settings->groot_theme_options = [
+            'extra_text_page' => 0
+        ];
 
         foreach ($settings as $key => $value) {
             if (!Setting::where('key', $key)->exists()) {

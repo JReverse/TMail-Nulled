@@ -67,6 +67,12 @@
             <button type="button" wire:click="add('forbidden_ids')" class="mt-2 px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray disabled:opacity-25 transition ease-in-out duration-150">Add</button>
         </div>
         <div class="col-span-6 sm:col-span-4">
+            <x-jet-label for="date_format" value="{{ __('Date Format') }}" />
+            <x-jet-input id="date_format" type="text" class="mt-1 block w-full" wire:model.defer="state.date_format"/>
+            <x-jet-input-error for="state.date_format" class="mt-2" />
+            <small>{{ __('Caution: For Advance Users Only!') }} <a class="border-b" href="https://www.w3schools.com/php/func_date_date_format.asp" target="_blank">{{ __('View Reference') }}</a></small>
+        </div>
+        <div class="col-span-6 sm:col-span-4">
             <x-jet-label for="after_last_email_delete" value="{{ __('Action after last Email ID is Deleted by User') }}" />
             <div class="relative">
                 <select class="form-input rounded-md shadow-sm mt-1 block w-full cursor-pointer" wire:model.defer="state.after_last_email_delete">

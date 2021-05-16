@@ -16,6 +16,7 @@ class Actions extends Component {
         $this->domains = config('app.settings.domains');
         $this->email = TMail::getEmail();
         $this->emails = TMail::getEmails();
+        $this->validateDomainInEmail();
     }
 
     public function syncEmail($email) {
@@ -81,6 +82,26 @@ class Actions extends Component {
                 $this->domain = $parts[1];
             }
             $this->user = $parts[0];
+        }
+    }
+
+    /**
+     * Validate if Domain in Email Exist
+     */
+    private function validateDomainInEmail() {
+        $data = explode('@', $this->email);
+        if (isset($data[1])) {
+            $domain = $data[1];
+            $domains = config('app.settings.domains');
+            if (!in_array($domain, $domains)) {
+                $key = array_search($this->email, $this->emails);
+                TMail::removeEmail($this->email);
+                if ($key == 0 && count($this->emails) == 1 && config('app.settings.after_last_email_delete') == 'redirect_to_homepage') {
+                    return redirect()->route('home');
+                } else {
+                    return redirect()->route('app');
+                }
+            }
         }
     }
 }

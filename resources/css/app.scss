@@ -14,13 +14,7 @@ input:checked ~ .toggle-path {
 }
 .striped-img-preview {
   color: white;
-  background: repeating-linear-gradient(
-    45deg,
-    #eeeeee,
-    #eeeeee 5px,
-    #cccccc 5px,
-    #cccccc 10px
-  );
+  background: repeating-linear-gradient(45deg, #eeeeee, #eeeeee 5px, #cccccc 5px, #cccccc 10px);
 }
 
 .reset * {
@@ -31,7 +25,7 @@ input:checked ~ .toggle-path {
   animation-play-state: paused;
 }
 
-main.page {
+.page {
   h1,
   h2,
   h3,
@@ -43,4 +37,8 @@ main.page {
   li {
     all: revert;
   }
+}
+
+.groot-theme div.in-app-page #blogs .bg-gray-100 {
+  background: #fff;
 }

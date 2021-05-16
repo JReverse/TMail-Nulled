@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '8e0c244d1db74fcf64548dd3a7ea2b361e408610',
+    'reference' => '0dd69be85762e9ad2835c1d1f61c4b020667fddb',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -84,6 +84,15 @@ private static $installed = array (
       array (
         0 => '*',
       ),
+    ),
+    'ddeboer/imap' => 
+    array (
+      'pretty_version' => '1.12.0',
+      'version' => '1.12.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f0e02bb82cdfbffa5c064be090e0b4c15edbf684',
     ),
     'dnoegel/php-xdg-base-dir' => 
     array (
@@ -523,7 +532,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '8e0c244d1db74fcf64548dd3a7ea2b361e408610',
+      'reference' => '0dd69be85762e9ad2835c1d1f61c4b020667fddb',
     ),
     'laravel/sanctum' => 
     array (
@@ -1375,24 +1384,6 @@ private static $installed = array (
       array (
       ),
       'reference' => '80953678b19901e5165c56752d087fc11526017c',
-    ),
-    'webklex/laravel-imap' => 
-    array (
-      'pretty_version' => '2.2.0',
-      'version' => '2.2.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'cc316c76c3eabed137fa264949abb0814a2de2b1',
-    ),
-    'webklex/php-imap' => 
-    array (
-      'pretty_version' => '2.3.1',
-      'version' => '2.3.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '1bd367ed0bc1a0dc31bded1664c32272ca66f5bf',
     ),
     'webmozart/assert' => 
     array (

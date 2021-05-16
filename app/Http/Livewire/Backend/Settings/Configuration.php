@@ -17,7 +17,8 @@ class Configuration extends Component {
         'cron_password' => '',
         'delete' => [],
         'random' => [],
-        'after_last_email_delete' => 'redirect_to_homepage'
+        'after_last_email_delete' => 'redirect_to_homepage',
+        'date_format' => 'd M Y h:i A'
     ];
 
     public function mount() {
@@ -38,6 +39,7 @@ class Configuration extends Component {
 
     public function remove($type = 'domains', $key) {
         unset($this->state[$type][$key]);
+        $this->state[$type] = array_values($this->state[$type]);
     }
 
     public function update() {
@@ -49,7 +51,8 @@ class Configuration extends Component {
                 'state.fetch_seconds' => 'required|numeric',
                 'state.cron_password' => 'required',
                 'state.delete.value' => 'required|numeric',
-                'state.random.end' => 'gte:' . $this->state['random']['start']
+                'state.random.end' => 'gte:' . $this->state['random']['start'],
+                'state.date_format' => 'required'
             ],
             [
                 'state.domains.0.required' => 'Atleast one Domain is Required',
@@ -60,14 +63,15 @@ class Configuration extends Component {
                 'state.cron_password.required' => 'CRON Password field is Required',
                 'state.delete.value.required' => 'Delete Value field is Required',
                 'state.delete.value.numeric' => 'Delete Value field can only be Numeric',
-                'state.random.end.gte' => 'Random End must be greater than or equal to ' . $this->state['random']['start']
+                'state.random.end.gte' => 'Random End must be greater than or equal to ' . $this->state['random']['start'],
+                'state.date_format.required' => 'Date Format field is Required'
             ]
         );
         if (!$this->state['advance_random']) {
             $this->state['random']['start'] = 0;
             $this->state['random']['end'] = 0;
         }
-        $settings = Setting::whereIn('key', ['domains', 'fetch_seconds', 'forbidden_ids', 'cron_password', 'delete', 'random', 'after_last_email_delete'])->get();
+        $settings = Setting::whereIn('key', ['domains', 'fetch_seconds', 'forbidden_ids', 'cron_password', 'delete', 'random', 'after_last_email_delete', 'date_format'])->get();
         foreach ($settings as $setting) {
             $setting->value = serialize($this->state[$setting->key]);
             $setting->save();

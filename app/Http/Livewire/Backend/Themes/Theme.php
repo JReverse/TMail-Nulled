@@ -21,7 +21,7 @@ class Theme extends Component {
         $this->themes = [];
         foreach ($directory as $file) {
             if ($file->isDot()) continue;
-            if ($file->getFilename() === 'index.php') continue;
+            if ($file->isFile()) continue;
             array_push($this->themes, $file->getFilename());
         }
         $this->current = Setting::pick('theme');

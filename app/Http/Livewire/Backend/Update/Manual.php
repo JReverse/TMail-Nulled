@@ -15,7 +15,7 @@ class Manual extends Component {
     use WithFileUploads;
 
     public $error = '';
-    public $file;
+    public $filename;
     public $progress = '';
 
     protected $listeners = ['manual' => 'apply'];
@@ -23,15 +23,9 @@ class Manual extends Component {
     public function apply($step = 0) {
         $this->error = '';
         if ($step === 0) {
-            $this->validate([
-                'file' => 'required',
-            ], [
-                'file.required' => 'ZIP file is Required'
-            ]);
-            $filename = Storage::disk('tmp')->put('/', $this->file);
             $file = new ZipArchive;
-            if ($file->open('tmp/' . $filename) !== TRUE) {
-                $this->error = 'Looks like the ZIP file is corrupted or invalid';
+            if ($file->open('tmp/' . $this->filename) !== TRUE) {
+                $this->error = 'Looks like the ZIP file is corrupted or does not exist.';
                 return false;
             } else {
                 $this->progress .= '<div class="text-green-500">Extracting Files</div>';
@@ -40,8 +34,7 @@ class Manual extends Component {
                     $item = $file->getNameIndex($i);
                     $this->progress .= '<div class="text-white">/' . $item . '</div>';
                 }
-                $this->file = null;
-                Storage::disk('tmp')->delete($filename);
+                Storage::disk('tmp')->delete($this->filename);
                 $this->emit('manual', 1);
             }
         } else if ($step === 1) {

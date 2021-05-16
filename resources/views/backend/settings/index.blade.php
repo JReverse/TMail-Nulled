@@ -24,5 +24,10 @@
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
             @livewire('backend.settings.advance')
         </div>
+        @if (config('app.settings.theme') == 'groot')
+            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                @livewire('backend.settings.theme')
+            </div>
+        @endif
     </div>
 </x-app-layout>
