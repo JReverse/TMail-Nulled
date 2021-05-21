@@ -1,8 +1,6 @@
 # TMail-Nulled
 ***Version 6.4***
 
-⚠️ *** UNMAINTAINED TILL FURTHER NOTICE ***⚠️
-
 v6.4 - 10 May 2021
 - Added Optional Feature to allow Email to create via URL
 - Fixed Theme Upload Issue
@@ -248,6 +246,3 @@ v1.1 - 25 June 2017
 
 v1.0 - 22 June 2017
 - Initial Release! Yay!
-
-
-⚠️ *** UNMAINTAINED TILL FURTHER NOTICE ***⚠️
